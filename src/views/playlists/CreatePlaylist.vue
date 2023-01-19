@@ -7,7 +7,8 @@
     <input type="file" @change="handleChange">
     <div class="error">{{ fileError }}</div>
     <div class="error"></div>
-    <button>Create</button>
+    <button v-if="!isPending">Create</button>
+    <button v-else disabled>Saving...</button>
   </form>
 </template>
 
@@ -28,9 +29,12 @@ export default {
         const description = ref('')
         const file = ref(null)
         const fileError = ref(null)
+        const isPending = ref(false)
 
         const handleSubmit = async () => {
             if (file.value){
+                isPending.value = true
+
                 await uploadImage(file.value)
                 await addDoc({
                   title: title.value,
@@ -42,6 +46,8 @@ export default {
                   song: [],
                   createdAt: timeStamp()
                 })
+
+                isPending.value = false
 
                 if(!error.value) {
                   console.log('Playlist Added');
@@ -67,7 +73,7 @@ export default {
             }
         }
 
-        return { title, description, handleSubmit, handleChange, fileError }
+        return { title, description, handleSubmit, handleChange, fileError, isPending }
     }
 }
 </script>
