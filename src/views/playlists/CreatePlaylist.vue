@@ -43,7 +43,7 @@ export default {
                   userName: user.value.displayName,
                   coverUrl: url.value,
                   filePath: filePath.value,
-                  song: [],
+                  songs: [],
                   createdAt: timeStamp()
                 })
 
